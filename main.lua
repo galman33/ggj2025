@@ -34,6 +34,8 @@ time_left = total_time
 timer_on = false
 finished = false
 
+animate_bubble2 = false
+
 function _init()
     reset_question()
     reset_sequence()
@@ -44,16 +46,18 @@ function reset_question()
     bubble2_y = 128 * 1.5
 
     bubble1_t = 9999
-    bubble2_t = 9999
 
     bubble1_shown = false
     bubble2_shown = false
+
+    bubble1_text_to_show = 0
+    bubble2_text_to_show = 0
 
     animate_bubble2 = false
 
     current_question = rnd(questions)
 
-    question_start_time = t()
+    question_start_time = 9999
 end
 
 function reset_sequence()
@@ -98,19 +102,41 @@ function _update()
         end
     end
 
+    if bubble1_shown and t() > bubble1_t + 1.5 then
+        animate_bubble2 = true
+    end
+
     if animate_bubble2 then
         if bubble2_y > 70 then
             bubble2_y -= 10
         else
             if not bubble2_shown then
-                bubble2_t = t()
                 bubble2_shown = true
+
+                question_start_time = t() + 0.25
             end
         end
     end
 
-    if t() > question_start_time + 2 then
+    if bubble1_shown and bubble1_text_to_show < 1 then
+        bubble1_text_to_show += 1 / 30
+    end
+
+    if t() > question_start_time then
         timer_on = true
+    end
+
+    local target = (sequence_index - 1) / #sequence
+    if bubble2_text_to_show < target then
+        bubble2_text_to_show += 1 / 30
+        if bubble2_text_to_show > target then
+            bubble2_text_to_show = target
+        end
+    elseif bubble2_text_to_show > target then
+        bubble2_text_to_show -= 1 / 30
+        if bubble2_text_to_show < target then
+            bubble2_text_to_show = target
+        end
     end
 
     if timer_on then
@@ -124,9 +150,8 @@ function _draw()
     draw_back_bubbles()
 
     local y = sin(t() * 1) * 2
-    draw_text_bubble(current_question[1], 0.5, 15, bubble1_y + y, false)
-    --draw_text_bubble("bye", 2, 20, bubble2_y + y, true)
-    draw_text_bubble(current_question[2], 2.25, 15, bubble2_y + y, true)
+    draw_text_bubble(current_question[1], bubble1_text_to_show, 15, bubble1_y + y, false)
+    draw_text_bubble(current_question[2], bubble2_text_to_show, 15, bubble2_y + y, true)
 
     print("hello ggj 2025", 35 + sin(t()) * 10, 5, rnd(15))
 
@@ -152,7 +177,7 @@ function _draw()
     end
 end
 
-function draw_text_bubble(txt, start_time, x, y, side)
+function draw_text_bubble(txt, t_to_show, x, y, side)
     local bubble_w = 80
     local bubble_h = 20
     local bubble_h_half = bubble_h / 2
@@ -163,8 +188,9 @@ function draw_text_bubble(txt, start_time, x, y, side)
     circfill(x + bubble_h_half + bubble_w, y + bubble_h_half, bubble_h_half, c)
     rectfill(x + bubble_h_half, y, x + bubble_w + bubble_h_half, y + bubble_h, c)
 
-    local txt_speed = 30
-    local n = max(min(flr((t() - start_time) * txt_speed), #txt), 0)
+    --local txt_speed = 30
+    --local n = max(min(flr((t() - start_time) * txt_speed), #txt), 0)
+    local n = t_to_show * #txt
     local txt_sub = sub(txt, 1, n)
     print(txt_sub, x + 7, y + 4, 0)
 
