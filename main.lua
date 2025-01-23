@@ -1,18 +1,120 @@
-bubble1_y = 128
-bubble2_y = 128 * 4
+-- Funny questions and "AI"-like answers
+questions = {
+    { "why do birds fly?", "because walking takes \ntoo long." },
+    { "why is the sky blue?", "it's shy and doesn't want to show its real color." },
+    { "can fish sweat?", "only during underwater yoga." },
+    { "why do cows moo?", "they forgot the lyrics to the song." },
+    { "how do trees use wi-fi?", "they log in." },
+    { "why do stars twinkle?", "they're trying to get your attention." },
+    { "can you eat a clock?", "yes, but it's very \ntime-consuming." },
+    { "why do bananas curve?", "they're avoiding straight paths to keep life exciting." },
+    { "what's the speed of dark?", "faster than light when you turn off the switch." },
+    { "why don't chairs fly?", "they're afraid of heights." }
+}
+
+sequence_chars = {
+    { "❎", ❎ },
+    { "🅾️", 🅾️ },
+    { "⬆️", ⬆️ },
+    { "⬇️", ⬇️ },
+    { "⬅️", ⬅️ },
+    { "➡️", ➡️ }
+}
+
+current_question = nil
+question_start_time = 0
+
+sequence_length = 6
+sequence = {}
+sequence_index = 1
+
+total_time = 5
+time_left = total_time
+
+timer_on = false
+finished = false
 
 function _init()
+    reset_question()
+    reset_sequence()
+end
+
+function reset_question()
+    bubble1_y = 128
+    bubble2_y = 128 * 1.5
+
+    bubble1_t = 9999
+    bubble2_t = 9999
+
+    bubble1_shown = false
+    bubble2_shown = false
+
+    animate_bubble2 = false
+
+    current_question = rnd(questions)
+
+    question_start_time = t()
+end
+
+function reset_sequence()
+    sequence = {}
+    for i = 1, sequence_length do
+        add(sequence, rnd(sequence_chars))
+    end
+    sequence_index = 1
 end
 
 function _update()
-    update_back_bubbles()
-
-    if bubble1_y > 30 then
-        bubble1_y -= 10
+    if finished and (btnp(❎) or btnp(🅾️)) then
+        reset_question()
+        reset_sequence()
+        time_left = total_time
+        timer_on = false
+        finished = false
     end
 
-    if bubble2_y > 55 then
-        bubble2_y -= 10
+    if timer_on and not finished then
+        if btnp(❎) or btnp(🅾️) or btnp(⬆️) or btnp(⬇️) or btnp(⬅️) or btnp(➡️) then
+            if btnp(sequence[sequence_index][2]) then
+                sequence_index += 1
+                if sequence_index > #sequence then
+                    animate_bubble2 = true
+                    finished = true
+                end
+            else
+                sequence_index = 1
+            end
+        end
+    end
+
+    update_back_bubbles()
+
+    if bubble1_y > 35 then
+        bubble1_y -= 10
+    else
+        if not bubble1_shown then
+            bubble1_t = t()
+            bubble1_shown = true
+        end
+    end
+
+    if animate_bubble2 then
+        if bubble2_y > 70 then
+            bubble2_y -= 10
+        else
+            if not bubble2_shown then
+                bubble2_t = t()
+                bubble2_shown = true
+            end
+        end
+    end
+
+    if t() > question_start_time + 2 then
+        timer_on = true
+    end
+
+    if timer_on then
+        time_left -= 1 / 30
     end
 end
 
@@ -22,36 +124,61 @@ function _draw()
     draw_back_bubbles()
 
     local y = sin(t() * 1) * 2
-    draw_text_bubble("hello", 0.5, 20, bubble1_y + y, false)
+    draw_text_bubble(current_question[1], 0.5, 15, bubble1_y + y, false)
     --draw_text_bubble("bye", 2, 20, bubble2_y + y, true)
-    draw_text_bubble("12345678901234567890", 2, 20, bubble2_y + y, true)
+    draw_text_bubble(current_question[2], 2.25, 15, bubble2_y + y, true)
 
     print("hello ggj 2025", 35 + sin(t()) * 10, 5, rnd(15))
+
+    if timer_on and not finished then
+        -- draw timer
+        rectfill(0, 124, 128, 128, 6)
+        rectfill(0, 124, 128 * time_left / total_time, 128, 11)
+
+        -- draw sequence
+        local sequence_w = #sequence * 10
+
+        for i = 1, #sequence do
+            local c = 7
+            if i < sequence_index then
+                c = 11
+            end
+            print(sequence[i][1], (128 - sequence_w) / 2 + (i - 1) * 10, 110, c)
+        end
+    end
+
+    if finished then
+        print("❎ next", 50, 110, 7)
+    end
 end
 
 function draw_text_bubble(txt, start_time, x, y, side)
     local bubble_w = 80
+    local bubble_h = 20
+    local bubble_h_half = bubble_h / 2
 
     local c = 7
     if (side) c = 11
-    circfill(x + 5, y + 5, 5, c)
-    circfill(x + 5 + bubble_w, y + 5, 5, c)
-    rectfill(x + 5, y, x + 5 + bubble_w, y + 10, c)
+    circfill(x + bubble_h_half, y + bubble_h_half, bubble_h_half, c)
+    circfill(x + bubble_h_half + bubble_w, y + bubble_h_half, bubble_h_half, c)
+    rectfill(x + bubble_h_half, y, x + bubble_w + bubble_h_half, y + bubble_h, c)
 
-    local txt_speed = 15
+    local txt_speed = 30
     local n = max(min(flr((t() - start_time) * txt_speed), #txt), 0)
     local txt_sub = sub(txt, 1, n)
-    print(txt_sub, x + 5, y + 3, 0)
+    print(txt_sub, x + 7, y + 4, 0)
+
+    local tip_y = y + bubble_h_half
 
     if side then
-        local tip_x = x + bubble_w - 2
-        line(tip_x + 5, y + 11, tip_x + 8, y + 11, c)
-        line(tip_x + 7, y + 12, tip_x + 9, y + 12, c)
-        line(tip_x + 8, y + 13, tip_x + 10, y + 13, c)
+        local tip_x = x + bubble_w + 5
+        line(tip_x + 5, tip_y + 11, tip_x + 8, tip_y + 11, c)
+        line(tip_x + 7, tip_y + 12, tip_x + 9, tip_y + 12, c)
+        line(tip_x + 8, tip_y + 13, tip_x + 10, tip_y + 13, c)
     else
-        local tip_x = x - 2
-        line(tip_x + 5, y + 11, tip_x + 8, y + 11, c)
-        line(tip_x + 4, y + 12, tip_x + 6, y + 12, c)
-        line(tip_x + 3, y + 13, tip_x + 5, y + 13, c)
+        local tip_x = x + 1
+        line(tip_x + 5, tip_y + 11, tip_x + 8, tip_y + 11, c)
+        line(tip_x + 4, tip_y + 12, tip_x + 6, tip_y + 12, c)
+        line(tip_x + 3, tip_y + 13, tip_x + 5, tip_y + 13, c)
     end
 end
