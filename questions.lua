@@ -30,6 +30,18 @@ questions = split(questions_data, "\n")
 deli(questions, #questions)
 
 for i = 1, #questions do
-    local parts = split(questions[i], ",")
+    local parts = split(questions[i], ",", false)
+    for j = 1, #parts do
+        local part = parts[j]
+        local new_part = ""
+        for k = 1, #part do
+            if part[k] == "~" then
+                new_part = new_part .. ','
+            else
+                new_part = new_part .. part[k]
+            end
+        end
+        parts[j] = new_part
+    end
     questions[i] = { parts[1] .. "\n" .. parts[2], parts[3] .. "\n" .. parts[4] .. "\n" .. parts[5], parts[6] }
 end

@@ -11,9 +11,9 @@ sequence_chars = {
 is_on_menu = true
 
 current_question = nil
+current_question_index = 0
 question_start_time = 0
 
-sequence_length = 6
 sequence = {}
 sequence_index = 1
 
@@ -21,9 +21,11 @@ total_time = 5
 time_left = total_time
 
 timer_on = false
+answered = false
 finished = false
 
 animate_bubble2 = false
+animate_bubble3 = false
 
 function _init()
     reset_question()
@@ -33,24 +35,36 @@ end
 function reset_question()
     bubble1_y = 128
     bubble2_y = 128 * 1.5
+    bubble3_y = 128 * 1.5
 
-    bubble1_t = 9999
+    bubble1_t = 0
+    bubble3_t = 0
 
     bubble1_shown = false
     bubble2_shown = false
+    bubble3_shown = false
 
     bubble1_text_to_show = 0
     bubble2_text_to_show = 0
+    bubble3_text_to_show = 0
 
     animate_bubble2 = false
+    animate_bubble3 = false
 
-    current_question = rnd(questions)
+    current_question_index += 1
+    if current_question_index > #questions then
+        current_question_index = 1
+    end
+    current_question = questions[current_question_index]
 
-    question_start_time = 9999
+    question_start_time = 0
+
+    timer_on = false
 end
 
 function reset_sequence()
     sequence = {}
+    local sequence_length = flr((current_question_index - 1) / 2) + 2
     for i = 1, sequence_length do
         add(sequence, rnd(sequence_chars))
     end
@@ -67,17 +81,19 @@ function _update()
         reset_question()
         reset_sequence()
         time_left = total_time
-        timer_on = false
+        answered = false
         finished = false
     end
 
-    if timer_on and not finished then
+    if timer_on and not answered then
         if btnp(❎) or btnp(🅾️) or btnp(⬆️) or btnp(⬇️) or btnp(⬅️) or btnp(➡️) then
             if btnp(sequence[sequence_index][2]) then
                 sequence_index += 1
                 if sequence_index > #sequence then
-                    animate_bubble2 = true
-                    finished = true
+                    animate_bubble3 = true
+                    bubble3_t = t()
+                    timer_on = false
+                    answered = true
                 end
             else
                 sequence_index = 1
@@ -87,7 +103,7 @@ function _update()
 
     update_back_bubbles()
 
-    if bubble1_y > 35 then
+    if bubble1_y > 25 then
         bubble1_y -= 10
     else
         if not bubble1_shown then
@@ -101,7 +117,7 @@ function _update()
     end
 
     if animate_bubble2 then
-        if bubble2_y > 70 then
+        if bubble2_y > 60 then
             bubble2_y -= 10
         else
             if not bubble2_shown then
@@ -112,11 +128,28 @@ function _update()
         end
     end
 
+    if animate_bubble3 and t() > bubble3_t + 0.25 then
+        if bubble3_y > 90 then
+            bubble3_y -= 10
+        else
+            if not bubble3_shown then
+                bubble3_shown = true
+            end
+        end
+    end
+
     if bubble1_shown and bubble1_text_to_show < 1 then
         bubble1_text_to_show += 1 / 30
     end
 
-    if t() > question_start_time then
+    if bubble3_shown and bubble3_text_to_show < 1 then
+        bubble3_text_to_show += 1 / 30
+        if bubble3_text_to_show > 1 then
+            finished = true
+        end
+    end
+
+    if not answered and bubble2_shown and t() > question_start_time then
         timer_on = true
     end
 
@@ -151,10 +184,11 @@ function _draw()
     local y = sin(t() * 1) * 2
     draw_text_bubble(current_question[1], bubble1_text_to_show, 15, bubble1_y + y, false)
     draw_text_bubble(current_question[2], bubble2_text_to_show, 15, bubble2_y + y, true)
+    draw_text_bubble(current_question[3], bubble3_text_to_show, 15, bubble3_y + y, false)
 
     print("hello ggj 2025", 35 + sin(t()) * 10, 5, rnd(15))
 
-    if timer_on and not finished then
+    if timer_on then
         -- draw timer
         rectfill(0, 124, 128, 128, 6)
         rectfill(0, 124, 128 * time_left / total_time, 128, 11)
@@ -172,7 +206,7 @@ function _draw()
     end
 
     if finished then
-        print("❎ next", 50, 110, 7)
+        print("❎ next", 50, 115, 7)
     end
 end
 
