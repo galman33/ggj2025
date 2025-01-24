@@ -1,6 +1,5 @@
 -- Funny questions and "AI"-like answers
 sequence_chars = {
-    { "❎", ❎ },
     { "🅾️", 🅾️ },
     { "⬆️", ⬆️ },
     { "⬇️", ⬇️ },
@@ -97,7 +96,7 @@ function _update()
 
     if timer_on and not answered then
         if btnp(❎) or btnp(🅾️) or btnp(⬆️) or btnp(⬇️) or btnp(⬅️) or btnp(➡️) then
-            if btnp(sequence[sequence_index][2]) then
+            if btnp(sequence[sequence_index][2]) or (sequence[sequence_index][2] == 🅾️ and btnp(❎)) then
                 sequence_index += 1
                 if sequence_index > #sequence then
                     animate_bubble3 = true
@@ -247,7 +246,14 @@ function _draw()
     draw_text_bubble(current_question[3], bubble3_text_to_show, 15, bubble3_y + y, false)
     spr(current_face, 3, bubble3_y + y + 21, 2, 2)
 
-    print("lluna ai trial edition", 23 + sin(t()) * 10, 2, rnd(15))
+    local title = "lluna ai trial edition"
+    local title_x = 22
+    local title_y = 4
+    local title_colors = { 10, 11, 12 }
+    for i = 1, #title do
+        local letter_color = title_colors[flr(i * 0.5 + t() * 10) % #title_colors + 1]
+        title_x = print(title[i], title_x, title_y + sin(i * 0.1 + t()) * 2, letter_color)
+    end
 
     if timer_on or (answered and t() < bubble3_t + 0.5) then
         -- draw timer
@@ -267,7 +273,7 @@ function _draw()
     end
 
     if finished then
-        print("❎ next", 50, 120, 7)
+        print("🅾️ next", 50, 120, 7)
     end
 end
 
