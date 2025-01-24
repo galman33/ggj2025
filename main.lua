@@ -21,6 +21,8 @@ sequence_chars = {
     { "➡️", ➡️ }
 }
 
+is_on_menu = true
+
 current_question = nil
 question_start_time = 0
 
@@ -69,6 +71,11 @@ function reset_sequence()
 end
 
 function _update()
+    if is_on_menu then
+        update_menu()
+        return
+    end
+
     if finished and (btnp(❎) or btnp(🅾️)) then
         reset_question()
         reset_sequence()
@@ -145,6 +152,11 @@ function _update()
 end
 
 function _draw()
+    if is_on_menu then
+        draw_menu()
+        return
+    end
+
     cls(130)
 
     draw_back_bubbles()
