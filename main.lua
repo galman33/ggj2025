@@ -8,7 +8,7 @@ sequence_chars = {
     { "➡️", ➡️ }
 }
 
-face_sprites = { 3, 5 }
+face_sprites = { 3, 5, 7 }
 
 is_on_menu = true
 
@@ -235,7 +235,7 @@ function _draw()
         return
     end
 
-    cls(130)
+    cls(13)
 
     draw_back_bubbles()
 

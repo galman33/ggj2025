@@ -5,7 +5,7 @@ function update_back_bubbles()
     next_back_bubble_time -= 1
 
     if next_back_bubble_time <= 0 then
-        add(back_bubbles, { x = 64 + rnd(20) - 10, y = 128, vx = rnd(2) - 1, vy = -2 })
+        add(back_bubbles, { x = 64 + rnd(60) - 30, y = 128, vx = rnd(2) - 1, vy = -2 })
         next_back_bubble_time = 10
     end
 
