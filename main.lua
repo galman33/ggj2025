@@ -109,6 +109,9 @@ function _update()
         if not bubble1_shown then
             bubble1_t = t()
             bubble1_shown = true
+
+            -- start typing sound
+            sfx(0, 0)
         end
     end
 
@@ -134,18 +137,30 @@ function _update()
         else
             if not bubble3_shown then
                 bubble3_shown = true
+
+                sfx(0, 0)
             end
         end
     end
 
     if bubble1_shown and bubble1_text_to_show < 1 then
         bubble1_text_to_show += 1 / 30
+
+        if bubble1_text_to_show > 1 then
+            bubble1_text_to_show = 1
+
+            -- stop typing sound
+            sfx(-1, 0)
+        end
     end
 
     if bubble3_shown and bubble3_text_to_show < 1 then
         bubble3_text_to_show += 1 / 30
         if bubble3_text_to_show > 1 then
             finished = true
+
+            -- stop typing sound
+            sfx(-1, 0)
         end
     end
 
