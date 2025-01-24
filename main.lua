@@ -33,6 +33,8 @@ animate_bubble3 = false
 bubble2_sound_playing = false
 
 function _init()
+    init_menu()
+
     music(0, 0, 1)
 
     reset_question()
