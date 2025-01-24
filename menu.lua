@@ -1,9 +1,9 @@
 function init_menu()
-    for o=0,15 do
-        pal(o,o+128,1)
-    end
+    --for o=0,15 do
+        --pal(o,o+128,1)
+    --end
         
-    poke(0x5f2e,1) 
+    --poke(0x5f2e,1) 
 end
 
 function update_menu()
