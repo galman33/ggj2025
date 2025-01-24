@@ -27,7 +27,11 @@ finished = false
 animate_bubble2 = false
 animate_bubble3 = false
 
+bubble2_sound_playing = false
+
 function _init()
+    music(0, 0, 1)
+
     reset_question()
     reset_sequence()
 end
@@ -97,6 +101,8 @@ function _update()
                 end
             else
                 sequence_index = 1
+
+                sfx(4, 2)
             end
         end
     end
@@ -111,7 +117,7 @@ function _update()
             bubble1_shown = true
 
             -- start typing sound
-            sfx(0, 0)
+            sfx(0, 1)
         end
     end
 
@@ -138,7 +144,7 @@ function _update()
             if not bubble3_shown then
                 bubble3_shown = true
 
-                sfx(0, 0)
+                sfx(0, 1)
             end
         end
     end
@@ -150,7 +156,7 @@ function _update()
             bubble1_text_to_show = 1
 
             -- stop typing sound
-            sfx(-1, 0)
+            sfx(-1, 1)
         end
     end
 
@@ -160,7 +166,7 @@ function _update()
             finished = true
 
             -- stop typing sound
-            sfx(-1, 0)
+            sfx(-1, 1)
         end
     end
 
@@ -168,16 +174,33 @@ function _update()
         timer_on = true
     end
 
-    local target = (sequence_index - 1) / #sequence
-    if bubble2_text_to_show < target then
-        bubble2_text_to_show += 1 / 30
-        if bubble2_text_to_show > target then
-            bubble2_text_to_show = target
-        end
-    elseif bubble2_text_to_show > target then
-        bubble2_text_to_show -= 1 / 30
+    if bubble2_shown then
+        local target = (sequence_index - 1) / #sequence
+        local should_play_sound = false
+
         if bubble2_text_to_show < target then
-            bubble2_text_to_show = target
+            bubble2_text_to_show += 1 / 30
+            if bubble2_text_to_show > target then
+                bubble2_text_to_show = target
+            end
+
+            should_play_sound = true
+        elseif bubble2_text_to_show > target then
+            bubble2_text_to_show -= 1 / 30
+            if bubble2_text_to_show < target then
+                bubble2_text_to_show = target
+            end
+
+            --should_play_sound = true
+        end
+
+        if should_play_sound != bubble2_sound_playing then
+            if should_play_sound then
+                sfx(3, 1)
+            else
+                sfx(-1, 1)
+            end
+            bubble2_sound_playing = should_play_sound
         end
     end
 
@@ -203,7 +226,7 @@ function _draw()
 
     print("hello ggj 2025", 35 + sin(t()) * 10, 5, rnd(15))
 
-    if timer_on then
+    if timer_on or (answered and t() < bubble3_t + 0.5) then
         -- draw timer
         rectfill(0, 124, 128, 128, 6)
         rectfill(0, 124, 128 * time_left / total_time, 128, 11)
