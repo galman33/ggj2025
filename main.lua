@@ -1,17 +1,4 @@
 -- Funny questions and "AI"-like answers
-questions = {
-    { "why do birds fly?", "because walking takes \ntoo long." },
-    { "why is the sky blue?", "it's shy and doesn't want to show its real color." },
-    { "can fish sweat?", "only during underwater yoga." },
-    { "why do cows moo?", "they forgot the lyrics to the song." },
-    { "how do trees use wi-fi?", "they log in." },
-    { "why do stars twinkle?", "they're trying to get your attention." },
-    { "can you eat a clock?", "yes, but it's very \ntime-consuming." },
-    { "why do bananas curve?", "they're avoiding straight paths to keep life exciting." },
-    { "what's the speed of dark?", "faster than light when you turn off the switch." },
-    { "why don't chairs fly?", "they're afraid of heights." }
-}
-
 sequence_chars = {
     { "❎", ❎ },
     { "🅾️", 🅾️ },
@@ -204,7 +191,12 @@ function draw_text_bubble(txt, t_to_show, x, y, side)
     --local n = max(min(flr((t() - start_time) * txt_speed), #txt), 0)
     local n = t_to_show * #txt
     local txt_sub = sub(txt, 1, n)
-    print(txt_sub, x + 7, y + 4, 0)
+    local txt_offset = 1
+    if side then
+        txt_offset = -2
+    end
+
+    print(txt_sub, x + 9, y + 4 + txt_offset, 0)
 
     local tip_y = y + bubble_h_half
 
