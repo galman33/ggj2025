@@ -8,11 +8,15 @@ sequence_chars = {
     { "➡️", ➡️ }
 }
 
+face_sprites = { 3, 5 }
+
 is_on_menu = true
 
 current_question = nil
 current_question_index = 0
 question_start_time = 0
+
+current_face = 3
 
 sequence = {}
 sequence_index = 1
@@ -64,6 +68,8 @@ function reset_question()
     question_start_time = 0
 
     timer_on = false
+
+    current_face = rnd(face_sprites)
 end
 
 function reset_sequence()
@@ -109,8 +115,13 @@ function _update()
 
     update_back_bubbles()
 
-    if bubble1_y > 25 then
+    local bubble1_y_target = 14
+    if bubble1_y > bubble1_y_target then
         bubble1_y -= 10
+
+        if bubble1_y < bubble1_y_target then
+            bubble1_y = bubble1_y_target
+        end
     else
         if not bubble1_shown then
             bubble1_t = t()
@@ -126,8 +137,13 @@ function _update()
     end
 
     if animate_bubble2 then
-        if bubble2_y > 60 then
+        local bubble2_y_target = 52
+        if bubble2_y > bubble2_y_target then
             bubble2_y -= 10
+
+            if bubble2_y < bubble2_y_target then
+                bubble2_y = bubble2_y_target
+            end
         else
             if not bubble2_shown then
                 bubble2_shown = true
@@ -138,8 +154,12 @@ function _update()
     end
 
     if animate_bubble3 and t() > bubble3_t + 0.25 then
-        if bubble3_y > 90 then
+        local bubble3_y_target = 89
+        if bubble3_y > bubble3_y_target then
             bubble3_y -= 10
+            if bubble3_y < bubble3_y_target then
+                bubble3_y = bubble3_y_target
+            end
         else
             if not bubble3_shown then
                 bubble3_shown = true
@@ -221,10 +241,13 @@ function _draw()
 
     local y = sin(t() * 1) * 2
     draw_text_bubble(current_question[1], bubble1_text_to_show, 15, bubble1_y + y, false)
+    spr(current_face, 3, bubble1_y + y + 21, 2, 2)
     draw_text_bubble(current_question[2], bubble2_text_to_show, 15, bubble2_y + y, true)
+    spr(1, 111, bubble2_y + y + 21, 2, 2)
     draw_text_bubble(current_question[3], bubble3_text_to_show, 15, bubble3_y + y, false)
+    spr(current_face, 3, bubble3_y + y + 21, 2, 2)
 
-    print("hello ggj 2025", 35 + sin(t()) * 10, 5, rnd(15))
+    print("lluna ai trial edition", 23 + sin(t()) * 10, 2, rnd(15))
 
     if timer_on or (answered and t() < bubble3_t + 0.5) then
         -- draw timer
@@ -244,7 +267,7 @@ function _draw()
     end
 
     if finished then
-        print("❎ next", 50, 115, 7)
+        print("❎ next", 50, 120, 7)
     end
 end
 
