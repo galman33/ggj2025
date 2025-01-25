@@ -31,6 +31,6 @@ function draw_menu()
     y=y+6;?"                                ",0,y
 
     if flr((t() * 2) % 2) == 0 then
-        print("press 🅾️ to start", 32, 105, 1)
+        print("press ❎ to start", 32, 105, 1)
     end
 end

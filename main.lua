@@ -1,6 +1,6 @@
 -- Funny questions and "AI"-like answers
 sequence_chars = {
-    { "🅾️", 🅾️ },
+    { "❎", ❎ },
     { "⬆️", ⬆️ },
     { "⬇️", ⬇️ },
     { "⬅️", ⬅️ },
@@ -101,7 +101,7 @@ function _update()
 
     if timer_on and not answered then
         if btnp(❎) or btnp(🅾️) or btnp(⬆️) or btnp(⬇️) or btnp(⬅️) or btnp(➡️) then
-            if btnp(sequence[sequence_index][2]) or (sequence[sequence_index][2] == 🅾️ and btnp(❎)) then
+            if btnp(sequence[sequence_index][2]) or (sequence[sequence_index][2] == ❎ and btnp(🅾️)) then
                 sequence_index += 1
                 if sequence_index > #sequence then
                     animate_bubble3 = true
@@ -293,7 +293,7 @@ function _draw()
     end
 
     if finished then
-        print("🅾️ next", 50, 120, 7)
+        print("❎ next", 50, 120, 7)
     end
 end
 
