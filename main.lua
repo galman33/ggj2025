@@ -1,10 +1,10 @@
 -- Funny questions and "AI"-like answers
 sequence_chars = {
-    { "❎", ❎ },
-    { "⬆️", ⬆️ },
-    { "⬇️", ⬇️ },
-    { "⬅️", ⬅️ },
-    { "➡️", ➡️ }
+    { 68, ❎ },
+    { 64, ⬆️ },
+    { 65, ⬇️ },
+    { 67, ⬅️ },
+    { 66, ➡️ }
 }
 
 face_sprites = { 3, 5, 7 }
@@ -350,15 +350,15 @@ function _draw()
             local sequence_w = (sequence_left - 1) * spacing_w
 
             for i = 0, sequence_left - 1 do
-                local c = 7
+                local color_offset = 0
                 local index_in_sequence = (j * max_sequence_in_line) + i + 1
                 if index_in_sequence < sequence_index then
-                    c = 11
+                    color_offset = 16
                 end
                 if sequence_wrong and t() < sequence_wrong_t + sequence_wrong_duration then
-                    c = 8
+                    color_offset = 32
                 end
-                print(sequence[index_in_sequence][1], (128 - sequence_w) / 2 + i * spacing_w - 4, 105 - sequence_h / 2 + j * spacing_h, c)
+                spr(sequence[index_in_sequence][1] + color_offset, (128 - sequence_w) / 2 + i * spacing_w - 4, 105 - sequence_h / 2 + j * spacing_h)
             end
         end
     end
