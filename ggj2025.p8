@@ -2,6 +2,7 @@ pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
 #include menu.lua
+#include transition.lua
 #include back_bubbles.lua
 #include particles.lua
 #include questions.lua
