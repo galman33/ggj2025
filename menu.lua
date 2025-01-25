@@ -39,20 +39,20 @@ function draw_menu()
     cls(134)
     draw_graph()
     y=000;?"                                ",0,y,1
-    y=y+6;?" = tf ========================= ",0,y,1
+    y=y+6;?" █ tf ████████████ ",0,y,1
     y=y+6;?"                                ",0,y,133
     y=y+41;?"  21 22 24 25 26 27 28 29 30 .  ",0,y,129
     y=y+6;?"                                ",0,y
     y=y+6;?" TO BURST?!",print(" ai bubble",0,y,1),y,133
     y=y+6;?" BY GAL PASTERNAK & TJ MICHAEL  ",0,y
     y=y+6;?"                                ",0,y 
-    y=y+6;?" cEO OF OPENgrok SAM ELON FRUSK ",0,y
+    y=y+6;?" ceo OF LLUNAai sAMELON fRUSK ( ",0,y
     y=y+6;?" AN ai TRAINED ON THE SOCIAL M- ",0,y
-    y=y+6;?" -EDIA POSTS OF ELON MUSK & SAM ",0,y
-    y=y+6;?" ALTMAN FRIED. aNNOUNCED MASSI- ",0,y 
-    y=y+6;?" -VE QUARTERLY LOSSES FOR THE.. ",0,y
+    y=y+6;?" -EDIA POSTS OF eLON mUSK & sAM ",0,y
+    y=y+6;?" aLTMAN fRIED). aNNOUNCED MASS- ",0,y 
+    y=y+6;?" -IVE QUARTERLY LOSSES FOR T... ",0,y 
 
-    if flr((t() * 2) % 2) == 0 then
-        print("press 🅾️ to start", 32, 120, 1)
+    if flr((t() * 2) % 2) == 0 then             
+        print("press ❎ to start", 32, 120, 1)
     end
 end
