@@ -37,6 +37,8 @@ animate_bubble3 = false
 bubble2_sound_playing = false
 
 sequence_wrong = false
+sequence_wrong_t = 0
+sequence_wrong_duration = 0.5
 failed = false
 
 last_timer_particle_t = 0
@@ -58,6 +60,9 @@ end
 
 function reset_question()
     bubble1_y = 128
+    if current_question_index == 0 then
+        bubble1_y = 128 * 3
+    end
     bubble2_y = 128 * 1.5
     bubble3_y = 128 * 1.5
 
@@ -109,6 +114,8 @@ function reset_sequence()
 end
 
 function _update()
+    update_transition()
+
     if is_on_menu then
         update_menu()
         return
@@ -134,6 +141,10 @@ function _update()
                 end
             else
                 sequence_index = 1
+
+                sequence_wrong = true
+                sequence_wrong_t = t()
+                time_left = total_time
 
                 sfx(4, 2)
             end
@@ -225,8 +236,6 @@ function _update()
         local target = (sequence_index - 1) / #sequence
         local should_play_sound = false
 
-        sequence_wrong = false
-
         if bubble2_text_to_show < target then
             bubble2_text_to_show += 1 / 30
             if bubble2_text_to_show > target then
@@ -241,7 +250,6 @@ function _update()
             end
 
             --should_play_sound = true
-            sequence_wrong = true
         end
 
         if should_play_sound != bubble2_sound_playing then
@@ -287,6 +295,7 @@ end
 function _draw()
     if is_on_menu then
         draw_menu()
+        draw_transition()
         return
     end
 
@@ -307,7 +316,7 @@ function _draw()
     draw_text_bubble(bubble3_text, bubble3_text_to_show, 15, bubble3_y + y, false)
     spr(current_face, 3, bubble3_y + y + 21, 2, 2)
 
-    local title = "lluna ai trial edition"
+    local title = "LLUNAai trial edition"
     local title_x = 22
     local title_y = 4
     local title_colors = { 10, 11, 12 }
@@ -337,7 +346,7 @@ function _draw()
                 if index_in_sequence < sequence_index then
                     c = 11
                 end
-                if sequence_wrong and sequence_index == 1 then
+                if sequence_wrong and t() < sequence_wrong_t + sequence_wrong_duration then
                     c = 8
                 end
                 print(sequence[index_in_sequence][1], (128 - sequence_w) / 2 + i * spacing_w - 4, 110 - sequence_h / 2 + j * spacing_h, c)
@@ -350,6 +359,8 @@ function _draw()
     end
 
     draw_particles()
+
+    draw_transition()
 end
 
 function draw_text_bubble(txt, t_to_show, x, y, side)
