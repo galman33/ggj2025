@@ -307,7 +307,7 @@ function _draw()
     draw_text_bubble(bubble3_text, bubble3_text_to_show, 15, bubble3_y + y, false)
     spr(current_face, 3, bubble3_y + y + 21, 2, 2)
 
-    local title = "lluna ai trial edition"
+    local title = "LLUNAai trial edition"
     local title_x = 22
     local title_y = 4
     local title_colors = { 10, 11, 12 }
