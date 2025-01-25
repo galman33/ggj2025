@@ -295,7 +295,7 @@ function draw_text_bubble(txt, t_to_show, x, y, side)
     local bubble_h_half = bubble_h / 2
 
     local c = 7
-    if (side) c = 11
+    if (side) c = 15
     circfill(x + bubble_h_half, y + bubble_h_half, bubble_h_half, c)
     circfill(x + bubble_h_half + bubble_w, y + bubble_h_half, bubble_h_half, c)
     rectfill(x + bubble_h_half, y, x + bubble_w + bubble_h_half, y + bubble_h, c)
@@ -309,7 +309,9 @@ function draw_text_bubble(txt, t_to_show, x, y, side)
         txt_offset = -2
     end
 
-    print(txt_sub, x + 9, y + 4 + txt_offset, 0)
+    local txt_color = 0
+    if (side) txt_color = 0
+    print(txt_sub, x + 9, y + 4 + txt_offset, txt_color)
 
     local tip_y = y + bubble_h_half
 
