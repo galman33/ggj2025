@@ -7,7 +7,7 @@ sequence_chars = {
     { 66, ➡️ }
 }
 
-face_sprites = { 3, 5, 7 }
+face_sprites = { 3, 5, 7, 9, 11, 13 }
 
 is_on_menu = true
 
@@ -346,17 +346,18 @@ function _draw()
     draw_back_bubbles()
 
     local y = sin(t() * 1) * 2
+    local current_face_anim = flr(t() * 4 % 2) * 32
     draw_text_bubble(current_question[1], bubble1_text_to_show, 15, bubble1_y + y, false)
-    spr(current_face, 3, bubble1_y + y + 21, 2, 2)
+    spr(current_face + current_face_anim, 3, bubble1_y + y + 21, 2, 2)
     draw_text_bubble(current_question[2], bubble2_text_to_show, 15, bubble2_y + y, true)
-    spr(1, 111, bubble2_y + y + 21, 2, 2)
+    spr(1 + current_face_anim, 111, bubble2_y + y + 21, 2, 2)
 
     local bubble3_text = current_question[3]
     if failed then
         bubble3_text = "let's try again..."
     end
     draw_text_bubble(bubble3_text, bubble3_text_to_show, 15, bubble3_y + y, false)
-    spr(current_face, 3, bubble3_y + y + 21, 2, 2)
+    spr(current_face + current_face_anim, 3, bubble3_y + y + 21, 2, 2)
 
     local title = "LLUNAai trial edition"
     local title_x = 22
