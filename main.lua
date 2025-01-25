@@ -20,11 +20,7 @@ current_face = 3
 sequence = {}
 sequence_index = 1
 
-base_total_time = 5
-total_time_increment = 0.25
-max_total_time = 10
-
-total_time = base_total_time
+total_time = 3
 time_left = total_time
 
 timer_on = false
@@ -91,13 +87,6 @@ function reset_question()
 
     question_start_time = 0
 
-    total_time = base_total_time + total_time_increment * current_question_index
-    if total_time > max_total_time then
-        total_time = max_total_time
-    end
-    time_left = total_time
-    timer_on = false
-
     current_face = rnd(face_sprites)
 
     failed = false
@@ -105,12 +94,16 @@ end
 
 function reset_sequence()
     sequence = {}
-    local sequence_length = flr((current_question_index - 1) / 2) + 2
+    local sequence_length = flr((current_question_index - 1) / 2) + 3
     sequence_length = min(sequence_length, 20)
     for i = 1, sequence_length do
         add(sequence, rnd(sequence_chars))
     end
     sequence_index = 1
+
+    total_time = 3 + (sequence_length - 3) * 0.1
+    time_left = total_time
+    timer_on = false
 end
 
 function _update()
