@@ -1,4 +1,5 @@
 menu_won = false
+leaving_menu = true
 
 function init_menu()
     --for o=0,15 do
@@ -10,6 +11,13 @@ end
 
 function update_menu()
     if btnp(🅾️) or btn(❎) then
+        do_transition()
+        leaving_menu = true
+        --start_game()
+    end
+
+    if leaving_menu and during_transition and not transition_in then
+        leaving_menu = false
         start_game()
     end
 end

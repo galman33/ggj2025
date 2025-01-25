@@ -58,6 +58,9 @@ end
 
 function reset_question()
     bubble1_y = 128
+    if current_question_index == 0 then
+        bubble1_y = 128 * 3
+    end
     bubble2_y = 128 * 1.5
     bubble3_y = 128 * 1.5
 
@@ -109,6 +112,8 @@ function reset_sequence()
 end
 
 function _update()
+    update_transition()
+
     if is_on_menu then
         update_menu()
         return
@@ -288,6 +293,7 @@ end
 function _draw()
     if is_on_menu then
         draw_menu()
+        draw_transition()
         return
     end
 
@@ -351,6 +357,8 @@ function _draw()
     end
 
     draw_particles()
+
+    draw_transition()
 end
 
 function draw_text_bubble(txt, t_to_show, x, y, side)
