@@ -20,7 +20,11 @@ current_face = 3
 sequence = {}
 sequence_index = 1
 
-total_time = 5
+base_total_time = 5
+total_time_increment = 0.25
+max_total_time = 10
+
+total_time = base_total_time
 time_left = total_time
 
 timer_on = false
@@ -39,6 +43,11 @@ function _init()
     init_menu()
 
     music(0, 0, 1)
+end
+
+function start_game()
+    is_on_menu = false
+    current_question_index = 0
 
     reset_question()
     reset_sequence()
@@ -67,12 +76,18 @@ function reset_question()
         current_question_index += 1
     end
     if current_question_index > #questions then
-        current_question_index = 1
+        is_on_menu = true
+        menu_won = true
     end
     current_question = questions[current_question_index]
 
     question_start_time = 0
 
+    total_time = base_total_time + total_time_increment * current_question_index
+    if total_time > max_total_time then
+        total_time = max_total_time
+    end
+    time_left = total_time
     timer_on = false
 
     current_face = rnd(face_sprites)
