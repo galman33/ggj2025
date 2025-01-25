@@ -32,6 +32,8 @@ animate_bubble3 = false
 
 bubble2_sound_playing = false
 
+sequence_wrong = false
+
 function _init()
     init_menu()
 
@@ -200,6 +202,8 @@ function _update()
         local target = (sequence_index - 1) / #sequence
         local should_play_sound = false
 
+        sequence_wrong = false
+
         if bubble2_text_to_show < target then
             bubble2_text_to_show += 1 / 30
             if bubble2_text_to_show > target then
@@ -214,6 +218,7 @@ function _update()
             end
 
             --should_play_sound = true
+            sequence_wrong = true
         end
 
         if should_play_sound != bubble2_sound_playing then
@@ -278,6 +283,9 @@ function _draw()
                 local index_in_sequence = (j * max_sequence_in_line) + i + 1
                 if index_in_sequence < sequence_index then
                     c = 11
+                end
+                if sequence_wrong and sequence_index == 1 then
+                    c = 8
                 end
                 print(sequence[index_in_sequence][1], (128 - sequence_w) / 2 + i * spacing_w - 4, 110 - sequence_h / 2 + j * spacing_h, c)
             end
