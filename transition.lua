@@ -33,7 +33,6 @@ function draw_transition()
                 if transition_out then
                     tt = transition_mid_duration - (tt - transition_mid_duration)
                 end
-                --fillp(0b0011001111001100)
                 circfill(x * spacing, (y + (x % 2) * 0.5) * spacing, tt * 30, 0)
                 fillp()
             end
