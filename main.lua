@@ -242,6 +242,7 @@ function _update()
 
             --should_play_sound = true
             sequence_wrong = true
+            --time_left = total_time
         end
 
         if should_play_sound != bubble2_sound_playing then
