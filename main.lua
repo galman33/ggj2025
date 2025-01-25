@@ -39,6 +39,9 @@ bubble2_sound_playing = false
 sequence_wrong = false
 failed = false
 
+last_timer_particle_t = 0
+timer_particles_interval = 0.01
+
 function _init()
     init_menu()
 
@@ -264,6 +267,21 @@ function _update()
         answered = true
         failed = true
     end
+
+    if timer_on then
+        if t() >= last_timer_particle_t + timer_particles_interval then
+            last_timer_particle_t = t()
+
+            add_particle({
+                x = time_left / total_time * 128, y = 124 + rnd(6),
+                vx = rnd(2) - 0.5, vy = -0.5 - rnd(2),
+                ax = 0, ay = 0.2,
+                radius = 0.5, color = 11
+            })
+        end
+    end
+
+    update_particles()
 end
 
 function _draw()
@@ -330,6 +348,8 @@ function _draw()
     if finished then
         print("❎ next", 50, 120, 7)
     end
+
+    draw_particles()
 end
 
 function draw_text_bubble(txt, t_to_show, x, y, side)
