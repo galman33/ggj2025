@@ -2,7 +2,7 @@ questions_data = [[
 LLUNAai, press the  |buttons in order    |i am LLUNAai i am   |here to help humans.|                    |you exist to help.  |
 LLUNAai, you will   |connect now.        |dialing web portal. |initializing chat.  |                    |status: online      |
 yo lluna, how can i |sound hipper?       |spend quality time  |with hip friends.   |                    |groovy.             |
-hi lluna what's the |capital of kansas?  |according to the fbi|us factbook the     |current capital is k|thanks lluna!       |
+hi lluna what's the |capital of kansas?  |according to the fbi|uss factbook the    |current capital is k|thanks lluna!       |
 lluna how can i make|friends?            |find local community|gatherings for your |hobbies.            |hmmm.               |
 what's a good hobby |for me to take up?  |a hobby should be a |productive use of   |your time you enjoy |ok                  |
 is game development |a good hobby lluna? |game development is |an unproductive way |to spend your time. |oh..                |
