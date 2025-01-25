@@ -23,6 +23,7 @@ sequence_index = 1
 base_total_time = 5
 total_time_increment = 0.25
 max_total_time = 10
+
 total_time = base_total_time
 time_left = total_time
 
