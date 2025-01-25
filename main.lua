@@ -280,11 +280,16 @@ function _update()
         if t() >= last_timer_particle_t + timer_particles_interval then
             last_timer_particle_t = t()
 
+            local timer_c = 11
+            if time_left / total_time < 0.3 then
+                timer_c = 8
+            end
+
             add_particle({
-                x = time_left / total_time * 128, y = 124 + rnd(6),
+                x = time_left / total_time * 128, y = 120 + rnd(8),
                 vx = rnd(2) - 0.5, vy = -0.5 - rnd(2),
                 ax = 0, ay = 0.2,
-                radius = 0.5, color = 11
+                radius = 0.5, color = timer_c
             })
         end
     end
@@ -327,8 +332,12 @@ function _draw()
 
     if timer_on or (answered and t() < bubble3_t + 0.5) then
         -- draw timer
-        rectfill(0, 124, 128, 128, 6)
-        rectfill(0, 124, 128 * time_left / total_time, 128, 11)
+        local timer_c = 11
+        if time_left / total_time < 0.3 then
+            timer_c = 8
+        end
+        rectfill(0, 120, 128, 128, 6)
+        rectfill(0, 120, 128 * time_left / total_time, 128, timer_c)
 
         -- draw sequence
         local max_sequence_in_line = 10
@@ -349,7 +358,7 @@ function _draw()
                 if sequence_wrong and t() < sequence_wrong_t + sequence_wrong_duration then
                     c = 8
                 end
-                print(sequence[index_in_sequence][1], (128 - sequence_w) / 2 + i * spacing_w - 4, 110 - sequence_h / 2 + j * spacing_h, c)
+                print(sequence[index_in_sequence][1], (128 - sequence_w) / 2 + i * spacing_w - 4, 105 - sequence_h / 2 + j * spacing_h, c)
             end
         end
     end
