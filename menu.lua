@@ -45,9 +45,14 @@ function draw_menu()
     y=y+6;?"                                ",0,y
     y=y+6;?" TO BURST?!",print(" ai bubble",0,y,1),y,133
     y=y+6;?" BY GAL PASTERNAK & TJ MICHAEL  ",0,y
-    y=y+6;?"                                ",0,y
+    y=y+6;?"                                ",0,y 
+    y=y+6;?" cEO OF OPENgrok SAM ELON FRUSK ",0,y
+    y=y+6;?" AN ai TRAINED ON THE SOCIAL M- ",0,y
+    y=y+6;?" -EDIA POSTS OF ELON MUSK & SAM ",0,y
+    y=y+6;?" ALTMAN FRIED. aNNOUNCED MASSI- ",0,y 
+    y=y+6;?" -VE QUARTERLY LOSSES FOR THE.. ",0,y
 
     if flr((t() * 2) % 2) == 0 then
-        print("press 🅾️ to start", 32, 105, 1)
+        print("press 🅾️ to start", 32, 120, 1)
     end
 end
