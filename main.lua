@@ -358,7 +358,12 @@ function _draw()
 
     if finished then
         print("❎ next", 50, 120, 7)
-        print(current_question_index .. "/" .. #questions, 110, 120, 7)
+
+        local offset_x = 0
+        if current_question_index >= 10 then
+            offset_x = -4
+        end
+        print(current_question_index .. "/" .. #questions, 110 + offset_x, 120, 7)
     end
 
     draw_particles()
