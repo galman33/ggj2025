@@ -19,12 +19,9 @@ current_face = 3
 
 sequence = {}
 sequence_index = 1
+sequence_length = 3
 
-base_total_time = 5
-total_time_increment = 0.25
-max_total_time = 10
-
-total_time = base_total_time
+total_time = 3
 time_left = total_time
 
 timer_on = false
@@ -44,7 +41,44 @@ failed = false
 last_timer_particle_t = 0
 timer_particles_interval = 0.01
 
+modes = {
+    { "easy", 4, 0.2 },
+    { "medium", 3, 0.16 },
+    { "hard", 2.5, 0.12 }
+}
+
+current_mode = 2
+
+function change_mode(b)
+    local changed = false
+
+    if (b & 1 > 0) then
+        current_mode -= 1
+        if current_mode < 1 then
+            current_mode = #modes
+        end
+
+        changed = true
+    end
+    if (b & 2 > 0) then
+        current_mode += 1
+        if current_mode > #modes then
+            current_mode = 1
+        end
+
+        changed = true
+    end
+
+    menuitem(1, "mode: " .. modes[current_mode][1], change_mode)
+
+    total_time = modes[current_mode][2] + (sequence_length - 3) * modes[current_mode][3]
+
+    return changed
+end
+
 function _init()
+    menuitem(1, "mode: " .. modes[current_mode][1], change_mode)
+
     init_menu()
 
     music(0, 0, 1)
@@ -91,13 +125,6 @@ function reset_question()
 
     question_start_time = 0
 
-    total_time = base_total_time + total_time_increment * current_question_index
-    if total_time > max_total_time then
-        total_time = max_total_time
-    end
-    time_left = total_time
-    timer_on = false
-
     current_face = rnd(face_sprites)
 
     failed = false
@@ -105,12 +132,16 @@ end
 
 function reset_sequence()
     sequence = {}
-    local sequence_length = flr((current_question_index - 1) / 2) + 2
+    sequence_length = flr((current_question_index - 1) / 2) + 3
     sequence_length = min(sequence_length, 20)
     for i = 1, sequence_length do
         add(sequence, rnd(sequence_chars))
     end
     sequence_index = 1
+
+    total_time = modes[current_mode][2] + (sequence_length - 3) * modes[current_mode][3]
+    time_left = total_time
+    timer_on = false
 end
 
 function _update()
@@ -365,6 +396,12 @@ function _draw()
 
     if finished then
         print("❎ next", 50, 120, 7)
+
+        local offset_x = 0
+        if current_question_index >= 10 then
+            offset_x = -4
+        end
+        print(current_question_index .. "/" .. #questions, 110 + offset_x, 120, 7)
     end
 
     draw_particles()
