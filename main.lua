@@ -358,6 +358,7 @@ function _draw()
 
     if finished then
         print("❎ next", 50, 120, 7)
+        print(current_question_index .. "/" .. #questions, 110, 120, 7)
     end
 
     draw_particles()
