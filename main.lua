@@ -37,6 +37,8 @@ animate_bubble3 = false
 bubble2_sound_playing = false
 
 sequence_wrong = false
+sequence_wrong_t = 0
+sequence_wrong_duration = 0.5
 failed = false
 
 last_timer_particle_t = 0
@@ -140,6 +142,10 @@ function _update()
             else
                 sequence_index = 1
 
+                sequence_wrong = true
+                sequence_wrong_t = t()
+                time_left = total_time
+
                 sfx(4, 2)
             end
         end
@@ -230,8 +236,6 @@ function _update()
         local target = (sequence_index - 1) / #sequence
         local should_play_sound = false
 
-        sequence_wrong = false
-
         if bubble2_text_to_show < target then
             bubble2_text_to_show += 1 / 30
             if bubble2_text_to_show > target then
@@ -246,8 +250,6 @@ function _update()
             end
 
             --should_play_sound = true
-            sequence_wrong = true
-            time_left = total_time
         end
 
         if should_play_sound != bubble2_sound_playing then
@@ -344,7 +346,7 @@ function _draw()
                 if index_in_sequence < sequence_index then
                     c = 11
                 end
-                if sequence_wrong and sequence_index == 1 then
+                if sequence_wrong and t() < sequence_wrong_t + sequence_wrong_duration then
                     c = 8
                 end
                 print(sequence[index_in_sequence][1], (128 - sequence_w) / 2 + i * spacing_w - 4, 110 - sequence_h / 2 + j * spacing_h, c)
