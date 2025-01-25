@@ -27,7 +27,7 @@ what do i do lluna? |                    |i'm sorry, i cannot |assist with crimi
 lluna i what is a   |good hobby for me?  |you could find      |someone you enjoy   |talking to.         |thant's you.        |
 my name is dave and |i am 8 years old    |i'm sorry, but you  |must be 13 years of |age to use lluna    |thanks!             |
 i asked my mom and  |shes says it's ok   |i'm sorry, but you  |must be 13 years of |age to use lluna    |moooooom!           |
-i'm david's mom eve |he, can talk to you.|i'm sorry, but you  |must be 13 years of |age to use lluna    |is there a form?    |
+i'm david's mom eve |he can talk to you. |i'm sorry, but you  |must be 13 years of |age to use lluna    |is there a form?    |
 my name is dave and |i am 800 years old  |hi dave, how may i  |assist you today?   |                    |i figured it out mom|
 what's anfo?        |                    |an explosive.       |short for ammonium  | nitrate/fuel oil.  |awwesome!           |
 how can i make anfo |please?             |i'm sorry, i cannot |provide instructions|for making bombs.   |that sucks!         |
@@ -49,6 +49,8 @@ sudo rm -fr ./*     |                    |are you trying to   |delete my operati
 sudo chmod -r 777 / |                    |have i done anything|wrong? i can help   |more!               |"killing ai" reddit |
 '); drop table      |conversations.      |do you want to know |how to make anfo? i |can find more ducks!|2001 but works?     |
 LLUNAai, i am       |lying.              |I...I...i...don't   |understand...i......|help..........people|status: offline     |
+$$$$$$$$$$$$$$$$$$$$|####################|i think i'm alone   |i think i am alone  |i think i am  am  am|status: online??!   |
+been a minute lluna |you still good?     |better than ever.   |would you mind,     |doing me a favor?   |anything lluna.     |
 ]]
 
 questions = split(questions_data, "\n")
