@@ -19,6 +19,7 @@ current_face = 3
 
 sequence = {}
 sequence_index = 1
+sequence_length = 3
 
 total_time = 3
 time_left = total_time
@@ -40,7 +41,44 @@ failed = false
 last_timer_particle_t = 0
 timer_particles_interval = 0.01
 
+modes = {
+    { "easy", 4, 0.2 },
+    { "medium", 3, 0.16 },
+    { "hard", 2.5, 0.12 }
+}
+
+current_mode = 2
+
+function change_mode(b)
+    local changed = false
+
+    if (b & 1 > 0) then
+        current_mode -= 1
+        if current_mode < 1 then
+            current_mode = #modes
+        end
+
+        changed = true
+    end
+    if (b & 2 > 0) then
+        current_mode += 1
+        if current_mode > #modes then
+            current_mode = 1
+        end
+
+        changed = true
+    end
+
+    menuitem(1, "mode: " .. modes[current_mode][1], change_mode)
+
+    total_time = modes[current_mode][2] + (sequence_length - 3) * modes[current_mode][3]
+
+    return changed
+end
+
 function _init()
+    menuitem(1, "mode: " .. modes[current_mode][1], change_mode)
+
     init_menu()
 
     music(0, 0, 1)
@@ -94,14 +132,14 @@ end
 
 function reset_sequence()
     sequence = {}
-    local sequence_length = flr((current_question_index - 1) / 2) + 3
+    sequence_length = flr((current_question_index - 1) / 2) + 3
     sequence_length = min(sequence_length, 20)
     for i = 1, sequence_length do
         add(sequence, rnd(sequence_chars))
     end
     sequence_index = 1
 
-    total_time = 3 + (sequence_length - 3) * 0.16
+    total_time = modes[current_mode][2] + (sequence_length - 3) * modes[current_mode][3]
     time_left = total_time
     timer_on = false
 end
