@@ -76,6 +76,7 @@ end
 function reset_sequence()
     sequence = {}
     local sequence_length = flr((current_question_index - 1) / 2) + 2
+    sequence_length = min(sequence_length, 20)
     for i = 1, sequence_length do
         add(sequence, rnd(sequence_chars))
     end
@@ -263,14 +264,23 @@ function _draw()
         rectfill(0, 124, 128 * time_left / total_time, 128, 11)
 
         -- draw sequence
-        local sequence_w = #sequence * 10
+        local max_sequence_in_line = 10
+        local spacing_w = 10
+        local spacing_h = 10
+        local seqeunce_lines = flr((#sequence - 1) / max_sequence_in_line) + 1
+        local sequence_h = (seqeunce_lines - 1) * spacing_h
+        for j = 0, seqeunce_lines - 1 do
+            local sequence_left = min(#sequence - j * max_sequence_in_line, max_sequence_in_line)
+            local sequence_w = (sequence_left - 1) * spacing_w
 
-        for i = 1, #sequence do
-            local c = 7
-            if i < sequence_index then
-                c = 11
+            for i = 0, sequence_left - 1 do
+                local c = 7
+                local index_in_sequence = (j * max_sequence_in_line) + i + 1
+                if index_in_sequence < sequence_index then
+                    c = 11
+                end
+                print(sequence[index_in_sequence][1], (128 - sequence_w) / 2 + i * spacing_w - 4, 110 - sequence_h / 2 + j * spacing_h, c)
             end
-            print(sequence[i][1], (128 - sequence_w) / 2 + (i - 1) * 10, 110, c)
         end
     end
 
