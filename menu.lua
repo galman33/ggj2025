@@ -46,14 +46,44 @@ function draw_graph()
 end    
 
 function draw_menu()
+
     cls(134)
-    draw_graph()
 
     if flr(t() * 9)%2 == 0 then
         title_color = 1
     else
         title_color = 136
     end
+
+    if true == menu_won then
+        cls(134)
+        y=000;?"                                ",0,y,1
+        y=y+6;?" █ tf ████████████ ",0,y,1
+        y=y+6;?"                                ",0,y
+        y=y+5;?"  █             ",0,y,136
+        y=y+5;?"  █             ",0,y,136
+        y=y+5;?"  █             ",0,y,136
+        y=y+5;?"  █           ",0,y,136
+        y=y+5;?"  █             ",0,y,136
+        y=y+5;?"  █ █            ",0,y,136
+        y=y+5;?"  █ █ █               ",0,y,136
+        y=y+6;?"  38 39 40 42 43 44 45 46 47 .  ",0,y,129
+        y=y+6;?"                                ",0,y
+        y=y+6;?" of mankind?!",print(" the end",0,y,title_color),y,133
+        y=y+6;?" BY GAL PASTERNAK & TJ MICHAEL  ",0,y
+        y=y+6;?"                                ",0,y
+        y=y+6;?" at 20:00 july 6th 2038, an em- ",0,y
+        y=y+6;?" ployee of the north american   ",0,y
+        y=y+6;?" aerospace defense command gave ",0,y
+        y=y+6;?" an ai chatbot  from LLUNAai a- ",0,y
+        y=y+6;?" cess to the usa missle defense ",0,y
+        y=y+6;?" command netwrok through an un- ",0,y
+        y=y+6;?" secured terminal used to...    ",0,y
+        return
+    end
+
+    draw_graph()
+
 
     y=000;?"                                ",0,y,1
     y=y+6;?" █ tf ████████████ ",0,y,1
