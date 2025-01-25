@@ -52,7 +52,7 @@ function draw_menu()
     y=y+6;?" aLTMAN fRIED). aNNOUNCED MASS- ",0,y 
     y=y+6;?" -IVE QUARTERLY LOSSES FOR T... ",0,y 
 
-    if flr((t() * 2) % 2) == 0 then             
+    if flr((t() * 2) % 2) == 0 then
         print("press ❎ to start", 32, 120, 1)
     end
 end

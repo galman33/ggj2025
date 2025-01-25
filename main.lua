@@ -1,6 +1,6 @@
 -- Funny questions and "AI"-like answers
 sequence_chars = {
-    { "🅾️", 🅾️ },
+    { "❎", ❎ },
     { "⬆️", ⬆️ },
     { "⬇️", ⬇️ },
     { "⬅️", ⬅️ },
@@ -31,6 +31,8 @@ animate_bubble2 = false
 animate_bubble3 = false
 
 bubble2_sound_playing = false
+
+sequence_wrong = false
 
 function _init()
     init_menu()
@@ -76,6 +78,7 @@ end
 function reset_sequence()
     sequence = {}
     local sequence_length = flr((current_question_index - 1) / 2) + 2
+    sequence_length = min(sequence_length, 20)
     for i = 1, sequence_length do
         add(sequence, rnd(sequence_chars))
     end
@@ -98,7 +101,7 @@ function _update()
 
     if timer_on and not answered then
         if btnp(❎) or btnp(🅾️) or btnp(⬆️) or btnp(⬇️) or btnp(⬅️) or btnp(➡️) then
-            if btnp(sequence[sequence_index][2]) or (sequence[sequence_index][2] == 🅾️ and btnp(❎)) then
+            if btnp(sequence[sequence_index][2]) or (sequence[sequence_index][2] == ❎ and btnp(🅾️)) then
                 sequence_index += 1
                 if sequence_index > #sequence then
                     animate_bubble3 = true
@@ -199,6 +202,8 @@ function _update()
         local target = (sequence_index - 1) / #sequence
         local should_play_sound = false
 
+        sequence_wrong = false
+
         if bubble2_text_to_show < target then
             bubble2_text_to_show += 1 / 30
             if bubble2_text_to_show > target then
@@ -213,6 +218,7 @@ function _update()
             end
 
             --should_play_sound = true
+            sequence_wrong = true
         end
 
         if should_play_sound != bubble2_sound_playing then
@@ -263,19 +269,31 @@ function _draw()
         rectfill(0, 124, 128 * time_left / total_time, 128, 11)
 
         -- draw sequence
-        local sequence_w = #sequence * 10
+        local max_sequence_in_line = 10
+        local spacing_w = 10
+        local spacing_h = 10
+        local seqeunce_lines = flr((#sequence - 1) / max_sequence_in_line) + 1
+        local sequence_h = (seqeunce_lines - 1) * spacing_h
+        for j = 0, seqeunce_lines - 1 do
+            local sequence_left = min(#sequence - j * max_sequence_in_line, max_sequence_in_line)
+            local sequence_w = (sequence_left - 1) * spacing_w
 
-        for i = 1, #sequence do
-            local c = 7
-            if i < sequence_index then
-                c = 11
+            for i = 0, sequence_left - 1 do
+                local c = 7
+                local index_in_sequence = (j * max_sequence_in_line) + i + 1
+                if index_in_sequence < sequence_index then
+                    c = 11
+                end
+                if sequence_wrong and sequence_index == 1 then
+                    c = 8
+                end
+                print(sequence[index_in_sequence][1], (128 - sequence_w) / 2 + i * spacing_w - 4, 110 - sequence_h / 2 + j * spacing_h, c)
             end
-            print(sequence[i][1], (128 - sequence_w) / 2 + (i - 1) * 10, 110, c)
         end
     end
 
     if finished then
-        print("🅾️ next", 50, 120, 7)
+        print("❎ next", 50, 120, 7)
     end
 end
 
@@ -285,7 +303,7 @@ function draw_text_bubble(txt, t_to_show, x, y, side)
     local bubble_h_half = bubble_h / 2
 
     local c = 7
-    if (side) c = 11
+    if (side) c = 15
     circfill(x + bubble_h_half, y + bubble_h_half, bubble_h_half, c)
     circfill(x + bubble_h_half + bubble_w, y + bubble_h_half, bubble_h_half, c)
     rectfill(x + bubble_h_half, y, x + bubble_w + bubble_h_half, y + bubble_h, c)
@@ -299,7 +317,9 @@ function draw_text_bubble(txt, t_to_show, x, y, side)
         txt_offset = -2
     end
 
-    print(txt_sub, x + 9, y + 4 + txt_offset, 0)
+    local txt_color = 0
+    if (side) txt_color = 0
+    print(txt_sub, x + 9, y + 4 + txt_offset, txt_color)
 
     local tip_y = y + bubble_h_half
 
