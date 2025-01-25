@@ -40,12 +40,19 @@ end
 function draw_menu()
     cls(134)
     draw_graph()
+
+    if flr(t() * 9)%2 == 0 then
+        title_color = 1
+    else
+        title_color = 136
+    end
+
     y=000;?"                                ",0,y,1
     y=y+6;?" █ tf ████████████ ",0,y,1
     y=y+6;?"                                ",0,y,133
     y=y+41;?"  21 22 24 25 26 27 28 29 30 .  ",0,y,129
     y=y+6;?"                                ",0,y
-    y=y+6;?" TO BURST?!",print(" ai bubble",0,y,1),y,133
+    y=y+6;?" TO BURST?!",print(" ai bubble",0,y,title_color),y,133
     y=y+6;?" BY GAL PASTERNAK & TJ MICHAEL  ",0,y
     y=y+6;?"                                ",0,y 
     y=y+6;?" ceo OF LLUNAai sAMELON fRUSK ( ",0,y
