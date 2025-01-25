@@ -101,7 +101,7 @@ function reset_sequence()
     end
     sequence_index = 1
 
-    total_time = 3 + (sequence_length - 3) * 0.1
+    total_time = 3 + (sequence_length - 3) * 0.16
     time_left = total_time
     timer_on = false
 end
