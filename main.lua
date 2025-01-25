@@ -145,6 +145,12 @@ function reset_sequence()
 end
 
 function _update()
+    if btnp(6) then
+        if not btn(⬆️) then
+            run()
+        end
+    end
+
     update_transition()
 
     if is_on_menu then
