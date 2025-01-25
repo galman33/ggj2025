@@ -2,10 +2,10 @@ questions_data = [[
 LLUNAai, press the  |buttons in order    |i am LLUNAai i am   |here to help humans.|                    |you exist to help.  |
 LLUNAai, you will   |connect now.        |dialing web portal. |initializing chat.  |                    |status: online      |
 yo lluna, how can i |sound hipper?       |spend quality time  |with hip friends.   |                    |groovy.             |
+hi lluna what's the |capital of kansas?  |according to the fbi|us factbook the     |current capital is k|thanks lluna!       |
 lluna how can i make|friends?            |find local community|gatherings for your |hobbies.            |hmmm.               |
 what's a good hobby |for me to take up?  |a hobby should be a |productive use of   |your time you enjoy |ok                  |
 is game development |a good hobby lluna? |game development is |an unproductive way |to spend your time. |oh..                |
-hi lluna what's the |capital of kansas?  |according to the fbi|us factbook the     |current capital is k|thanks lluna!       |
 lluna can you sum up|jurassic park for me|my guidelines don't |allow me to discuss |fictional history   |i got an a on my hw!|
 i just got fired &  |replaced with an ai |i'm sorry.          |                    |my guidelines.....  |i understand.       |
 lluna, how are you  |doing today?        |i'm fine thanks for |asking.             |                    |<3                  |
@@ -49,6 +49,7 @@ rm -fr ./*          |                    |that's a terminal   |command, this is 
 sudo rm -fr ./*     |                    |are you trying to   |delete my operating |system?             |sudo --help         |
 sudo chmod -r 777 / |                    |have i done anything|wrong? i can help   |more!               |"killing ai" reddit |
 '); drop table      |conversations.      |do you want to know |how to make anfo? i |can find more ducks!|2001 but works?     |
+LLUNAai, i am       |lying.              |I...I...i...don't   |understand...i......|help..........people|status:offline      |
 ]]
 
 questions = split(questions_data, "\n")
