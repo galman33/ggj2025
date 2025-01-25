@@ -33,6 +33,7 @@ animate_bubble3 = false
 bubble2_sound_playing = false
 
 sequence_wrong = false
+failed = false
 
 function _init()
     init_menu()
@@ -62,7 +63,9 @@ function reset_question()
     animate_bubble2 = false
     animate_bubble3 = false
 
-    current_question_index += 1
+    if not failed then
+        current_question_index += 1
+    end
     if current_question_index > #questions then
         current_question_index = 1
     end
@@ -73,6 +76,8 @@ function reset_question()
     timer_on = false
 
     current_face = rnd(face_sprites)
+
+    failed = false
 end
 
 function reset_sequence()
@@ -234,6 +239,16 @@ function _update()
     if timer_on then
         time_left -= 1 / 30
     end
+
+    if timer_on and time_left <= 0 then
+        sfx(4, 2)
+
+        animate_bubble3 = true
+        bubble3_t = t()
+        timer_on = false
+        answered = true
+        failed = true
+    end
 end
 
 function _draw()
@@ -251,7 +266,12 @@ function _draw()
     spr(current_face, 3, bubble1_y + y + 21, 2, 2)
     draw_text_bubble(current_question[2], bubble2_text_to_show, 15, bubble2_y + y, true)
     spr(1, 111, bubble2_y + y + 21, 2, 2)
-    draw_text_bubble(current_question[3], bubble3_text_to_show, 15, bubble3_y + y, false)
+
+    local bubble3_text = current_question[3]
+    if failed then
+        bubble3_text = "let's try again..."
+    end
+    draw_text_bubble(bubble3_text, bubble3_text_to_show, 15, bubble3_y + y, false)
     spr(current_face, 3, bubble3_y + y + 21, 2, 2)
 
     local title = "lluna ai trial edition"
