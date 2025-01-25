@@ -1,3 +1,5 @@
+menu_won = false
+
 function init_menu()
     --for o=0,15 do
         --pal(o,o+128,1)
@@ -8,7 +10,7 @@ end
 
 function update_menu()
     if btnp(🅾️) or btn(❎) then
-        is_on_menu = false
+        start_game()
     end
 end
 
